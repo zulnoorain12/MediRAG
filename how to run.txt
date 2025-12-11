@@ -1,0 +1,54 @@
+==================================================================
+   MediRAG – HOW TO RUN FROM SCRATCH
+==================================================================
+
+1. Place the entire MediRAG folder anywhere.
+
+2. Open Command Prompt and go to the folder
+
+3. Create fresh virtual environment
+   python -m venv medrag_env
+   medrag_env\Scripts\activate
+
+4. Install all packages (copy-paste all lines at once or use the requirements.txt)
+   pip install --upgrade pip
+   pip install streamlit==1.38.0
+   pip install fastapi==0.115.0 uvicorn[standard]==0.30.6
+   pip install langchain==0.3.1 langchain-community==0.3.1
+   pip install langchain-huggingface==0.1.0 langchain-chroma==0.1.4
+   pip install chromadb==0.5.3
+   pip install langchain-google-genai==2.0.4 google-generativeai==0.8.1
+   pip install sentence-transformers==3.1.1
+   pip install pypdf==4.3.1 python-dotenv==1.0.1 loguru==0.7.2
+   pip install "numpy<2.0.0"
+
+5. Create .env file in the main folder (same level as app.py)
+   Notepad .env
+   → Paste this (replace with your real key):
+   GEMINI_API_KEY=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+6. (Recommended) Delete old database for clean start
+   rmdir /s /q data\vector_db\medi_chromadb
+
+7. TERMINAL 1 – Start FastAPI backend (keep this open!)
+   uvicorn api.main:app --reload --port 8000
+
+   → Wait for "Application startup complete."
+
+8. TERMINAL 2 – Start Streamlit frontend (keep this open too!)
+   cd D:\Ahmad\MediRAG\MediRAG
+   medrag_env\Scripts\activate
+   streamlit run app.py
+
+9. Use the app!
+   - Browser opens → http://localhost:8501
+   - Go to "Upload Documents" → upload medical PDFs/TXTs
+   - Go to "Chatbot" → ask anything → get cited answers
+
+10. Test API directly (for screenshots!)
+    http://127.0.0.1:8000/docs
+    → Try it out → paste:
+    {
+      "question": "Give me a short report on COVID"
+    }
+    → Execute → 200 OK + answer
