@@ -17,5 +17,7 @@
 
 ### Run
 pip install -r requirements.txt
+
 uvicorn api.main:app --reload --port 8000
+
 streamlit run app.py
