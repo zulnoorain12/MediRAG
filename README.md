@@ -1,17 +1,21 @@
 # MediRAG: Medical Assistant with RAG, Memory & Safety
+**A safe, citation-backed medical chatbot**
 
-A smart, safe, hallucination-free medical chatbot using Gemini + LangChain + ChromaDB
+### Key Features
+- No hallucinations (RAG from uploaded PDFs)
+- Source citations with page numbers(in case of a multi paged PDF)
+- Local HuggingFace embeddings (no quota)
+- Multi-page UI (Upload + Chat)
 
-Features:
-- Retrieval-Augmented Generation (RAG)
-- Cite sources with page numbers
-- Remember patient history
-- Strict medical safety filters
-- Document upload & analytics
+### Original Contributions (Beyond Syllabus)
+- Used **local HuggingFace embeddings** for unlimited, offline indexing
+- Implemented **page-level source citations**
+- Added **greeting handling** for better UX
 
-Developed by: 
-Ahmad Bilal
-Laiba Hamid
-Eman Sheraz
+### Tech Stack
+- LangChain • ChromaDB • Gemini • HuggingFace • Streamlit
 
-Semester Project - Computational Intelligence
+### Run
+pip install -r requirements.txt
+uvicorn api.main:app --reload --port 8000
+streamlit run app.py
