@@ -9,8 +9,9 @@ Features:
 - Strict medical safety filters
 - Document upload & analytics
 
-Developed by: [Your Names]
-Semester Project - Generative AI & LLMs
-"# MediRAG" 
-"# MediRAG" 
-"# MediRAG" 
+Developed by: 
+Ahmad Bilal
+Laiba Hamid
+Eman Sheraz
+
+Semester Project - Computational Intelligence
