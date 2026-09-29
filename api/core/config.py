@@ -14,6 +14,7 @@ class Settings:
 
     PROJECT_NAME = "MediRAG API"
     VERSION = "2.0"
+    MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
     # CORRECTED PATH — points to data/vector_db from project root
     DB_PATH = os.path.join(project_root, "data", "vector_db", "medi_chromadb")
 

@@ -3,30 +3,34 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_classic.chains import create_retrieval_chain
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "vector_db", "medi_chromadb")
+from .config import settings
+
+DB_PATH = settings.DB_PATH
 
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={'device': 'cpu'})
 
 def get_retriever():
     vectorstore = Chroma(persist_directory=DB_PATH, embedding_function=embeddings)
-    return vectorstore.as_retriever(search_kwargs={"k": 6})
+    return vectorstore.as_retriever(search_kwargs={"k": 8})
 
 def get_rag_chain():
     llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",  # Stable Dec 2025 model
+        model=settings.MODEL_NAME,
         temperature=0.1,
-        google_api_key=os.getenv("GEMINI_API_KEY")
+        api_key=settings.GEMINI_API_KEY
     )
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a cautious medical assistant.
-Use ONLY the context. If no info, say "I don't have information on this."
-Always end with: "Please consult a qualified doctor."
+        ("system", """You are a helpful and cautious medical assistant.
+Answer the user's question clearly, thoroughly, and accurately using the context provided below.
+If the context does not contain sufficient information to answer the question, clearly state that you do not have enough information in the provided documents.
+Always conclude your response with: "Please consult a qualified doctor."
 
-Context: {context}"""),
+Context:
+{context}"""),
         ("human", "{input}")
     ])
 

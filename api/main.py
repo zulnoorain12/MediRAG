@@ -1,4 +1,4 @@
-# api/main.py
+# api/main.py - reloaded with gemini-3.5-flash-lite
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import chat
