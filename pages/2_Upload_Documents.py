@@ -1,8 +1,4 @@
 import streamlit as st
-from langchain_community.document_loaders import PyPDFLoader, TextLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_chroma import Chroma
 import os
 import sys
 import shutil
@@ -259,17 +255,21 @@ st.markdown("""
 # ── Process logic ──────────────────────────────────────────────────────────────
 @st.cache_resource
 def get_embeddings():
+    from langchain_huggingface import HuggingFaceEmbeddings
+
     return HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2",
         model_kwargs={"device": "cpu"}
     )
 
-embeddings = get_embeddings()
-
 def process_uploaded_files(uploaded_files):
     if not uploaded_files:
         st.warning("⚠️ No files uploaded.")
         return 0
+
+    from langchain_community.document_loaders import PyPDFLoader, TextLoader
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+    from langchain_chroma import Chroma
 
     docs = []
     temp_dir = "data/raw_docs/temp"
@@ -308,6 +308,8 @@ def process_uploaded_files(uploaded_files):
         chunks = splitter.split_documents(docs)
         st.write(f"📦 Created **{len(chunks)} chunks**")
 
+        st.write("🧠 Loading local embedding model (first use may take longer)…")
+        embeddings = get_embeddings()
         Chroma.from_documents(
             documents=chunks,
             embedding=embeddings,
